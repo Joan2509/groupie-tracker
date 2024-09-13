@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title>Artists</title>
+</head>
+<body>
+    <h1>Artists</h1>
+    <div class="artists">
+        {{range .}}
+            <div class="artist-card">
+                <img src="{{.Image}}" alt="{{.Name}}">
+                <h3>{{.Name}}</h3>
+                <p>Members: {{join .Members ", "}}</p>
+            </div>
+        {{end}}
+    </div>
+    <a href="/locations">View Locations</a>
+    <a href="/dates">View Dates</a>
+</body>
+</html>
