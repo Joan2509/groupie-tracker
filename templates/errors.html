@@ -1,0 +1,33 @@
+<!-- templates/error.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ .Title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/script.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <div class="nav-links">
+                    <li><a href="/">Home</a></li>
+                </div>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Error</h1>
+        <h2>{{.Status}} - {{.Message}}</h2>
+        <p>Sorry, something went wrong. Please try again later or go back to the <a href="/">home page</a>.</p>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Groupie Trackers</p>
+    </footer>
+</body>
+
+</html>

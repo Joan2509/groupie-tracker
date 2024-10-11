@@ -1,20 +1,21 @@
 package main
 
 import (
-    "log"
-    "net/http"
-	"groupie-tracker/backend"
+	"fmt"
+	"log"
+	"net/http"
+
+	"groupie-tracker/server"
 )
 
 func main() {
-    http.HandleFunc("/", backend.homeHandler) // Home page
-    http.HandleFunc("/artists", backend.artistsHandler)
-    http.HandleFunc("/locations", backend.locationsHandler)
-    http.HandleFunc("/dates", backend.datesHandler)
-    http.HandleFunc("/relations", backend.relationsHandler)
-
-    log.Println("Server starting on :8080")
-    if err := http.ListenAndServe(":8080", nil); err != nil {
-        log.Fatal(err)
-    }
+	http.HandleFunc("/static/", server.StaticHandler)
+	http.HandleFunc("/", server.MainPage)
+	http.HandleFunc("/artists/", server.InfoAboutArtist)
+	// http.HandleFunc("/search/", server.SearchHandler)
+	fmt.Println("Server running on http://localhost:3000/")
+	err := http.ListenAndServe(":3000", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
