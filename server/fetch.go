@@ -103,21 +103,3 @@ func FetchDates(url string) (Date, error) {
 	}
 	return dates, nil
 }
-
-// func Search(data Everything, searchTerm string) (Everything, error) {
-// 	var output Everything
-// 	ids := make(map[int]int)
-// 	var artists []Artist
-// 	for _, result := range data.Everyone {
-// 		if strings.Contains(strings.ToLower(result.Name), strings.ToLower(searchTerm)) || strings.Contains(strings.ToLower(result.FirstAlbum), strings.ToLower(searchTerm)) || strings.Contains(strings.ToLower(strconv.Itoa(result.CreationDate)), strings.ToLower(searchTerm)) {
-// 			if _, ok := ids[result.ID]; ok {
-// 				continue
-// 			} else {
-// 				artists = append(artists, result)
-// 				ids[result.ID] += 1
-// 			}
-// 		}
-// 	}
-// 	output.Everyone = artists
-// 	return output, nil
-// }

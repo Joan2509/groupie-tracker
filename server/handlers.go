@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"text/template"
 )
 
@@ -91,56 +92,56 @@ func InfoAboutArtist(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "details.html", data)
 }
 
-// func SearchHandler(w http.ResponseWriter, r *http.Request) {
-// 	if r.URL.Path != "/search/" {
-// 		err := "404 Page not found"
-// 		ErrorPage(w, err, http.StatusNotFound)
-// 		return
-// 	}
-// 	if r.Method != http.MethodGet {
-// 		err := "405 Method is not allowed"
-// 		ErrorPage(w, err, http.StatusMethodNotAllowed)
-// 		return
-// 	}
+// SearchPage handles the artist search functionality.
+func SearchPage(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodGet {
+        ErrorPage(w, http.StatusMethodNotAllowed)
+        return
+    }
 
-// 	artists, err := FetchArtists()
-// 	if err != nil {
-// 		err := "500 Internal Server Error"
-// 		ErrorPage(w, err, http.StatusInternalServerError)
-// 		return
-// 	}
-// 	location, err := FetchLocations()
-// 	if err != nil {
-// 		err := "500 Internal Server Error"
-// 		ErrorPage(w, err, http.StatusInternalServerError)
-// 		return
-// 	}
-// 	allInfo := Everything{artists, location}
+    query := r.URL.Query().Get("q")
+    if query == "" {
+        ErrorPage(w, http.StatusBadRequest) // No query provided, return 400 error.
+        return
+    }
 
-// 	searchTerm := r.FormValue("Search")
-// 	if strings.Contains(searchTerm, " - ") {
-// 		searchTermWithoutGroups := strings.Split(searchTerm, " - ")
-// 		searchTerm = searchTermWithoutGroups[0]
-// 	}
+    var results []Artist
+    for _, artist := range artists {
+        if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
+            results = append(results, artist)
+        }
+    }
 
-// 	var searchedArtists Everything
-// 	if searchTerm != "" {
-// 		searchedArtists, err = Search(allInfo, searchTerm)
-// 		if err != nil {
-// 			err := "500 Internal Server Error"
-// 			ErrorPage(w, err, http.StatusInternalServerError)
-// 			return
-// 		}
+    // If no results, show a user-friendly "No artists found" message instead of a 404.
+    if len(results) == 0 {
+        data := struct {
+            Title   string
+            Query   string
+            Results []Artist
+            Message string
+        }{
+            Title:   "Search Results",
+            Query:   query,
+            Results: results,
+            Message: "No artists found matching your query.",
+        }
+        renderTemplate(w, "search.html", data)
+        return
+    }
 
-// 	}
-
-// 	err = tmp.ExecuteTemplate(w, "search.html", searchedArtists)
-// 	if err != nil {
-// 		err := "500 Internal Server Error"
-// 		ErrorPage(w, err, http.StatusInternalServerError)
-// 		return
-// 	}
-// }
+    // Render the search results
+    data := struct {
+        Title   string
+        Query   string
+        Results []Artist
+    }{
+        Title:   "Search Results",
+        Query:   query,
+        Results: results,
+    }
+    
+    renderTemplate(w, "search.html", data)
+}
 
 func ErrorPage(w http.ResponseWriter, code int) {
 	var message string
