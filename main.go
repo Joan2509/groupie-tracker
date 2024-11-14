@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/static/", server.StaticHandler)
+	http.HandleFunc("/static/", server.ServeStatic)
 	http.HandleFunc("/", server.MainPage)
 	http.HandleFunc("/artists/", server.InfoAboutArtist)
 	http.HandleFunc("/search/", server.SearchPage)
