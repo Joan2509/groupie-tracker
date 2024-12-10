@@ -1,0 +1,13 @@
+{{ define "content" }}
+    <h1>Search Results for "{{.Query}}"</h1>
+    <div class="artist-grid">
+        {{ range .Results }}
+        <a href="/artists/?id={{ .ID }}" class="artist-link" data-tooltip="Click to see members, concerts, dates etc.">
+            <img src="{{ .Image }}" alt="{{ .Name }}" class="">
+            <h3>{{ .Name }}</h3>
+        </a>
+        {{ else }}
+        <p>No matching artists found.</p>
+        {{ end }}
+    </div>
+{{ end }}
