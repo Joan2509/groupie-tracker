@@ -95,4 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error fetching suggestions:', error);
         }
     });
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.innerHTML = '';
+        }
+    });
 });
