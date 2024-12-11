@@ -13,6 +13,7 @@ func main() {
 	http.HandleFunc("/", server.MainPage)
 	http.HandleFunc("/artists/", server.InfoAboutArtist)
 	http.HandleFunc("/search/", server.SearchPage)
+	http.HandleFunc("/search/suggestions", server.SearchSuggestionsHandler)
 	fmt.Println("Server running on http://localhost:3000/")
 	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
