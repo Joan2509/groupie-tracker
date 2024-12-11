@@ -25,6 +25,17 @@ type Relation struct {
 	DatesLocation map[string][]string `json:"datesLocations"`
 }
 
+type SearchResult struct {
+	Artist    Artist
+	MatchType []string
+	Relevance float64
+}
+
+type SearchSuggestion struct {
+	Value string // The actual suggestion text
+	Type  string // Type of suggestion (artist, member, location, etc.)
+}
+
 // Passes dynamic data to HTML templates for rendering web pages.
 type TemplateData struct {
 	Title     string
