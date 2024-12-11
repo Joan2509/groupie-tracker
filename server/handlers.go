@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -103,6 +104,19 @@ func InfoAboutArtist(w http.ResponseWriter, r *http.Request) {
 	}
 	// Render the artist details template with all relevant data
 	renderTemplate(w, "details.html", data)
+}
+
+func SearchSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		ErrorPage(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	query := r.URL.Query().Get("q")
+	suggestions := GenerateSuggestions(query, artists)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(suggestions)
 }
 
 // SearchPage handles the artist search functionality.
