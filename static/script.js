@@ -36,7 +36,6 @@ document.addEventListener('mousemove', (e) => {
 document.addEventListener('DOMContentLoaded', function () {
     const tooltip = document.getElementById('tooltip');
     const buttons = document.querySelectorAll('.search-button, .details-button, .home-link');
-
     buttons.forEach(button => {
         button.addEventListener('mouseenter', (event) => {
             tooltip.textContent = button.getAttribute('data-tooltip');
@@ -59,4 +58,41 @@ document.addEventListener('keydown', function(event) {
         event.preventDefault(); // Prevent any default action for CTRL + B
         window.history.back(); // Go to the previous page
     }
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const suggestionsContainer = document.getElementById('search-suggestions');
+
+    searchInput.addEventListener('input', async (e) => {
+        const query = e.target.value.trim();
+        
+        try {
+            const response = await fetch(`/search/suggestions?q=${encodeURIComponent(query)}`);
+            const suggestions = await response.json();
+
+            // Clear previous suggestions
+            suggestionsContainer.innerHTML = '';
+
+            // Render new suggestions
+            suggestions.forEach(suggestion => {
+                const suggestionElement = document.createElement('div');
+                suggestionElement.classList.add('suggestion-item');
+                suggestionElement.innerHTML = `
+                    <span class="suggestion-text">${suggestion.Value}</span>
+                    <span class="suggestion-type">${suggestion.Type}</span>
+                `;
+                
+                // Add click event to fill search input
+                suggestionElement.addEventListener('click', () => {
+                    searchInput.value = suggestion.Value;
+                    suggestionsContainer.innerHTML = '';
+                    // Optional: trigger search
+                });
+
+                suggestionsContainer.appendChild(suggestionElement);
+            });
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+        }
+    });
 });
