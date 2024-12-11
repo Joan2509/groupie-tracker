@@ -28,7 +28,6 @@ type Relation struct {
 type SearchResult struct {
 	Artist    Artist
 	MatchType []string
-	Relevance float64
 }
 
 type SearchSuggestion struct {
