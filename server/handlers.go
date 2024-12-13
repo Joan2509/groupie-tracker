@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -105,6 +106,19 @@ func InfoAboutArtist(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "details.html", data)
 }
 
+func SearchSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		ErrorPage(w, http.StatusMethodNotAllowed)
+		return
+	}
+
+	query := r.URL.Query().Get("q")
+	suggestions := GenerateSuggestions(query, artists)
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(suggestions)
+}
+
 // SearchPage handles the artist search functionality.
 func SearchPage(w http.ResponseWriter, r *http.Request) {
 	if !checkMethodAndPath(w, r, http.MethodGet, "/search/") {
@@ -118,11 +132,11 @@ func SearchPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	searchResults := PerformSearch(query, artists)
+
 	var results []Artist
-	for _, artist := range artists {
-		if strings.Contains(strings.ToLower(artist.Name), strings.ToLower(query)) {
-			results = append(results, artist)
-		}
+	for _, result := range searchResults {
+		results = append(results, result.Artist)
 	}
 
 	data := TemplateData{
@@ -132,7 +146,7 @@ func SearchPage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if len(results) == 0 {
-		data.Message = "No artists found matching your query."
+		data.Message = "No artist data found matching your query."
 	}
 
 	// Render the search results template with matched artists
