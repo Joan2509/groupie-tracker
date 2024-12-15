@@ -12,9 +12,9 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 	Query := strings.ToLower(strings.TrimSpace(input))
 
 	// If input is too short, return no suggestions
-	// if len(Query) < 2 {
-	// 	return suggestions
-	// }
+	if len(Query) < 2 {
+		return suggestions
+	}
 
 	for _, artist := range artists {
 		if strings.Contains(strings.ToLower(artist.Name), Query) {
@@ -68,9 +68,9 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 		}
 	}
 
-	// if len(suggestions) > 10 {
-	// 	suggestions = suggestions[:10]
-	// }
+	if len(suggestions) > 10 {
+		suggestions = suggestions[:10]
+	}
 
 	return suggestions
 }
