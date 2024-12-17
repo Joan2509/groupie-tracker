@@ -117,24 +117,3 @@ func FetchAllDates() error {
 func FetchAllRelation() error {
 	return fetchData(relationURL, &relations)
 }
-
-// FetchRelation retrieves relation data from a specified URL using fetchData
-func FetchLocations(url string) (Loc, error) {
-	var location Loc
-	err := fetchData(url, &location)
-	return location, err
-}
-
-// FetchRelation retrieves relation data from a specified URL using fetchData
-func FetchRelation(url string) (Relation, error) {
-	var relation Relation
-	err := fetchData(url, &relation)
-	return relation, err
-}
-
-// FetchDates retrieves date data from a specified URL using fetchData
-func FetchDates(url string) (Date, error) {
-	var dates Date
-	err := fetchData(url, &dates)
-	return dates, err
-}

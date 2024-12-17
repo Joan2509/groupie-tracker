@@ -73,34 +73,12 @@ func InfoAboutArtist(w http.ResponseWriter, r *http.Request) {
 	}
 	id--
 
-	// Fetch artist data
-	locations, err := FetchLocations(artists[id].Locations)
-	if err != nil {
-		log.Println(err)
-		ErrorPage(w, http.StatusInternalServerError)
-		return
-	}
-
-	dates, err := FetchDates(artists[id].ConcertDates)
-	if err != nil {
-		log.Println(err)
-		ErrorPage(w, http.StatusInternalServerError)
-		return
-	}
-
-	rel, err := FetchRelation(artists[id].Relations)
-	if err != nil {
-		log.Println(err)
-		ErrorPage(w, http.StatusInternalServerError)
-		return
-	}
-
 	data := TemplateData{
 		Title:     "Artist Details",
 		Artist:    artists[id],
-		Locations: locations,
-		Dates:     dates,
-		Concerts:  rel,
+		Locations: locations.Locations[id],
+		Dates:     dates.Dates[id],
+		Concerts:  relations.Relations[id],
 	}
 	// Render the artist details template with all relevant data
 	renderTemplate(w, "details.html", data)
