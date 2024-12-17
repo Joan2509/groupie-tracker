@@ -46,20 +46,6 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 				},
 			)
 		}
-
-		locations, err := FetchLocations(artist.Locations)
-		if err == nil {
-			// Search through actual locations
-			for _, location := range locations.Locations {
-				if strings.Contains(strings.ToLower(location), Query) {
-					suggestions = append(suggestions, SearchSuggestion{
-						Value: location,
-						Type:  "location",
-					})
-				}
-			}
-		}
-
 		// Check creation date
 		creationDateStr := strconv.Itoa(artist.CreationDate)
 		if strings.Contains(creationDateStr, Query) {
@@ -69,6 +55,16 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 					Type:  "creation date",
 				},
 			)
+		}
+	}
+	for _, artistLocation := range locations.Locations {
+		for _, location := range artistLocation.Locations {
+			if strings.Contains(strings.ToLower(location), Query) {
+				suggestions = append(suggestions, SearchSuggestion{
+					Value: location,
+					Type:  "location",
+				})
+			}
 		}
 	}
 
@@ -103,13 +99,11 @@ func PerformSearch(input string, artists []Artist) []SearchResult {
 			matchTypes = append(matchTypes, "first album")
 		}
 
-		locations, err := FetchLocations(artist.Locations)
-		if err == nil {
-			// Search through actual locations
-			for _, location := range locations.Locations {
+		// Search through actual locations
+		for _, artistLocation := range locations.Locations {
+			for _, location := range artistLocation.Locations {
 				if strings.Contains(strings.ToLower(location), Query) {
 					matchTypes = append(matchTypes, "location")
-					break
 				}
 			}
 		}
