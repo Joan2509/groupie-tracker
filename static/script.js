@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const suggestionElement = document.createElement('div');
                 suggestionElement.classList.add('suggestion-item');
                 suggestionElement.innerHTML = `
-                    <span class="suggestion-text">${suggestion.Value}</span>
-                    <span class="suggestion-type">${suggestion.Type}</span>
+                   <a href="/artists/?id=${suggestion.ArtistID}"> <span class="suggestion-text">${suggestion.Value} - ${suggestion.Type} of ${suggestion.Name}</span>
                 `;
                 suggestionElement.addEventListener('click', () => {
                     searchInput.value = suggestion.Value;

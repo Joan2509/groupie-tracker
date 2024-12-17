@@ -47,7 +47,9 @@ type SearchResult struct {
 
 type SearchSuggestion struct {
 	Value string // The actual suggestion text
+	Name string // The name of the artist/band
 	Type  string // Type of suggestion (artist, member, location, etc.)
+	ArtistID int // ID of the artist
 }
 
 // Passes dynamic data to HTML templates for rendering web pages.

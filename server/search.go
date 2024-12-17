@@ -21,7 +21,9 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 			suggestions = append(suggestions,
 				SearchSuggestion{
 					Value: artist.Name,
+					Name : artist.Name,
 					Type:  "artist/band",
+					ArtistID: artist.ID,
 				},
 			)
 		}
@@ -31,7 +33,9 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 				suggestions = append(suggestions,
 					SearchSuggestion{
 						Value: member,
+						Name : artist.Name,
 						Type:  "member",
+						ArtistID: artist.ID,
 					},
 				)
 			}
@@ -42,7 +46,9 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 			suggestions = append(suggestions,
 				SearchSuggestion{
 					Value: artist.FirstAlbum,
+					Name : artist.Name,
 					Type:  "first album",
+					ArtistID: artist.ID,
 				},
 			)
 		}
@@ -52,7 +58,9 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 			suggestions = append(suggestions,
 				SearchSuggestion{
 					Value: creationDateStr,
+					Name : artist.Name,
 					Type:  "creation date",
+					ArtistID: artist.ID,
 				},
 			)
 		}
@@ -62,7 +70,10 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 			if strings.Contains(strings.ToLower(location), Query) {
 				suggestions = append(suggestions, SearchSuggestion{
 					Value: location,
+					Name: artists[artistLocation.ID-1].Name,
 					Type:  "location",
+					ArtistID: artistLocation.ID,
+					
 				})
 			}
 		}
