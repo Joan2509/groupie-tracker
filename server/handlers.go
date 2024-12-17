@@ -110,7 +110,7 @@ func SearchPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	searchResults := PerformSearch(query, artists)
+	searchResults := PerformSearch(query)
 
 	var results []Artist
 	for _, result := range searchResults {
