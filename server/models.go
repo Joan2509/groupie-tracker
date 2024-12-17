@@ -14,15 +14,30 @@ type Artist struct {
 }
 
 type Date struct {
+	ID int    `json:"id"`
 	Dates []string `json:"dates"`
 }
 
+type DatesResponse struct {
+    Dates []Date `json:"index"`
+}
+
 type Loc struct {
+	ID int `json:"id"`
 	Locations []string `json:"locations"`
 }
 
+type LocationsResponse struct {
+    Locations []Loc `json:"index"`
+}
+
 type Relation struct {
+	ID        int      `json:"id"`
 	DatesLocation map[string][]string `json:"datesLocations"`
+}
+
+type RelationResponse struct {
+    Relations []Relation `json:"index"`
 }
 
 type SearchResult struct {
@@ -32,7 +47,9 @@ type SearchResult struct {
 
 type SearchSuggestion struct {
 	Value string // The actual suggestion text
+	Name string // The name of the artist/band
 	Type  string // Type of suggestion (artist, member, location, etc.)
+	ArtistID int // ID of the artist
 }
 
 // Passes dynamic data to HTML templates for rendering web pages.

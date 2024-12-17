@@ -10,11 +10,17 @@ import (
 	"text/template"
 )
 
-// Global variables to hold templates and artist data
-var templates map[string]*template.Template
-var artists []Artist
-
-var artistsURL = "https://groupietrackers.herokuapp.com/api/artists"
+var (
+	templates    map[string]*template.Template
+	artistsURL   = "https://groupietrackers.herokuapp.com/api/artists"
+	locationsURL = "https://groupietrackers.herokuapp.com/api/locations"
+	datesURL     = "https://groupietrackers.herokuapp.com/api/dates"
+	relationURL  = "https://groupietrackers.herokuapp.com/api/relation"
+	artists      []Artist
+	locations    LocationsResponse
+	dates        DatesResponse
+	relations    RelationResponse
+)
 
 // init initializes templates and fetches artist data when the package is loaded.
 func init() {
@@ -27,6 +33,18 @@ func init() {
 
 	if err := FetchArtists(); err != nil {
 		log.Fatal("could not fetch artists: ", err)
+	}
+
+	if err := FetchAllLocations(); err != nil {
+		log.Fatal("could not fetch locations: ", err)
+	}
+
+	if err := FetchAllDates(); err != nil {
+		log.Fatal("could not fetch datess: ", err)
+	}
+
+	if err := FetchAllRelation(); err != nil {
+		log.Fatal("could not fetch relations: ", err)
 	}
 }
 
@@ -51,7 +69,7 @@ func loadTemplates() (map[string]*template.Template, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse template %s: %w", page, err)
 		}
-		//Store the parsed template in the map using the base file name as key
+		// Store the parsed template in the map using the base file name as key
 		templates[filepath.Base(page)] = tmpl
 	}
 	return templates, nil
@@ -85,23 +103,17 @@ func FetchArtists() error {
 	return fetchData(artistsURL, &artists)
 }
 
-// FetchRelation retrieves relation data from a specified URL using fetchData
-func FetchLocations(url string) (Loc, error) {
-	var location Loc
-	err := fetchData(url, &location)
-	return location, err
+// FetchAllLocations retrieves locations data from the defined locationsURL using fetchData
+func FetchAllLocations() error {
+	return fetchData(locationsURL, &locations)
 }
 
-// FetchRelation retrieves relation data from a specified URL using fetchData
-func FetchRelation(url string) (Relation, error) {
-	var relation Relation
-	err := fetchData(url, &relation)
-	return relation, err
+// FetchAllDates retrieves dates data from the defined datesURL using fetchData
+func FetchAllDates() error {
+	return fetchData(datesURL, &dates)
 }
 
-// FetchDates retrieves date data from a specified URL using fetchData
-func FetchDates(url string) (Date, error) {
-	var dates Date
-	err := fetchData(url, &dates)
-	return dates, err
+// FetchAllRelation retrieves relation data from the defined relationsURL using fetchData
+func FetchAllRelation() error {
+	return fetchData(relationURL, &relations)
 }

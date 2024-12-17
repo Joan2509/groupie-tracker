@@ -97,6 +97,7 @@ nav ul li {
     font-family: 'Thunder', sans-serif;
     font-style: normal;
     margin-right: auto;
+    min-width: 20vw;
     /* Push Home & Artists to the left */
 }
 
@@ -120,31 +121,40 @@ nav ul li a:hover {
     align-items: center;
     height: 100%;
 }
-
-.search-bar {
-    height: 50px;
+.search-icon {
+    font-size: 1.5rem;
+}
+.input-wrapper{
     display: flex;
     align-items: center;
-    gap: 8px;
-
 }
 
-.search-input {
+input {
     min-width: 20vw;
+    max-width: 50vw;
     height: 40px;
     padding: 0 10px;
-    background-color: #f2f0ef;
-    color: #3B3430;
+    color: #f2f0ef;
+    background-color: #1B1B1B;
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    outline: none;
+    font-size: 1.5rem;
 }
+input:focus{
+    border: none;
+    outline: none;
+}
+
+input:invalid,
+input:required {
+  border: none;
+  outline: none;
+}
+
 
 form button {
     height: 40px;
     padding: 0 15px;
-    background-color: #f2f0ef;
-    color: #3B3430;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
@@ -155,7 +165,6 @@ form button {
 }
 
 form button:hover {
-    background-color: #F2EF72;
     content: attr(data-tooltip);
 }
 
