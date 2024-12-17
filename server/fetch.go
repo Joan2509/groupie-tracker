@@ -17,9 +17,9 @@ var (
 	datesURL     = "https://groupietrackers.herokuapp.com/api/dates"
 	relationURL  = "https://groupietrackers.herokuapp.com/api/relation"
 	artists      []Artist
-	locations    []Loc
-	dates        []Date
-	relations    []Relation
+	locations    LocationsResponse
+	dates        DatesResponse
+	relations    RelationResponse
 )
 
 // init initializes templates and fetches artist data when the package is loaded.
@@ -42,7 +42,7 @@ func init() {
 	if err := FetchAllDates(); err != nil {
 		log.Fatal("could not fetch datess: ", err)
 	}
-	
+
 	if err := FetchAllRelation(); err != nil {
 		log.Fatal("could not fetch relations: ", err)
 	}
