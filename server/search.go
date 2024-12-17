@@ -18,57 +18,42 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 
 	for _, artist := range artists {
 		if strings.Contains(strings.ToLower(artist.Name), Query) {
-			suggestions = append(suggestions,
-				SearchSuggestion{
-					Value:    artist.Name,
-					Name:     artist.Name,
-					Type:     "artist/band",
-					ArtistID: artist.ID,
-				},
-			)
+			suggestions = append(suggestions, createSuggestion(artist.Name, "artist/band", artist))
 		}
 
 		for _, member := range artist.Members {
 			if strings.Contains(strings.ToLower(member), Query) {
-				suggestions = append(suggestions,
-					SearchSuggestion{
-						Value:    member,
-						Name:     artist.Name,
-						Type:     "member",
-						ArtistID: artist.ID,
-					},
-				)
+				suggestions = append(suggestions, createSuggestion(member, "member", artist))
 			}
 		}
 
 		// Check first album date
 		if strings.Contains(strings.ToLower(artist.FirstAlbum), Query) {
-			suggestions = append(suggestions,
-				SearchSuggestion{
-					Value:    artist.FirstAlbum,
-					Name:     artist.Name,
-					Type:     "first album",
-					ArtistID: artist.ID,
-				},
-			)
+			suggestions = append(suggestions, createSuggestion(artist.FirstAlbum, "first-album date", artist))
 		}
+
 		// Check creation date
 		creationDateStr := strconv.Itoa(artist.CreationDate)
 		if strings.Contains(creationDateStr, Query) {
-			suggestions = append(suggestions,
-				SearchSuggestion{
-					Value:    creationDateStr,
-					Name:     artist.Name,
-					Type:     "creation date",
-					ArtistID: artist.ID,
-				},
-			)
+			suggestions = append(suggestions, createSuggestion(creationDateStr, "creation date", artist))
 		}
 	}
+
+	//check locations
+	suggestions = searchLocations(Query, suggestions)
+
+	if len(suggestions) > 10 {
+		suggestions = suggestions[:10]
+	}
+
+	return suggestions
+}
+
+func searchLocations(query string, sugg []SearchSuggestion) []SearchSuggestion {
 	for _, artistLocation := range locations.Locations {
 		for _, location := range artistLocation.Locations {
-			if strings.Contains(strings.ToLower(location), Query) {
-				suggestions = append(suggestions, SearchSuggestion{
+			if strings.Contains(strings.ToLower(location), query) {
+				sugg = append(sugg, SearchSuggestion{
 					Value:    location,
 					Name:     artists[artistLocation.ID-1].Name,
 					Type:     "location",
@@ -77,12 +62,16 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 			}
 		}
 	}
+	return sugg
+}
 
-	if len(suggestions) > 10 {
-		suggestions = suggestions[:10]
+func createSuggestion(value, suggestionType string, artist Artist) SearchSuggestion {
+	return SearchSuggestion{
+		Value:    value,
+		Name:     artist.Name,
+		Type:     suggestionType,
+		ArtistID: artist.ID,
 	}
-
-	return suggestions
 }
 
 func PerformSearch(input string) []SearchResult {
