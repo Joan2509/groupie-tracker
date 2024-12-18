@@ -94,3 +94,92 @@ func TestFetchArtists(t *testing.T) {
 		t.Errorf("FetchArtists() did not populate artists correctly")
 	}
 }
+
+func TestFetchAllLocations(t *testing.T) {
+	// Create a test server
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(LocationsResponse{
+			Locations: []Loc{
+				{
+					ID:        1,
+					Locations: []string{"Location1", "Location2"},
+				},
+			},
+		})
+	}))
+	defer ts.Close()
+
+	// Replace the real URL with the test server URL
+	oldURL := locationsURL
+	locationsURL = ts.URL
+	defer func() { locationsURL = oldURL }()
+
+	// Test FetchAllLocations
+	err := FetchAllLocations()
+	if err != nil {
+		t.Fatalf("FetchAllLocations() error = %v", err)
+	}
+	if len(locations.Locations) != 1 || locations.Locations[0].Locations[0] != "Location1" {
+		t.Errorf("FetchAllLocations() did not populate locations correctly")
+	}
+}
+
+func TestFetchAllDates(t *testing.T) {
+	// Create a test server
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(DatesResponse{
+			Dates: []Date{
+				{
+					ID:    1,
+					Dates: []string{"2024-12-01", "2024-12-02"},
+				},
+			},
+		})
+	}))
+	defer ts.Close()
+
+	// Replace the real URL with the test server URL
+	oldURL := datesURL
+	datesURL = ts.URL
+	defer func() { datesURL = oldURL }()
+
+	// Test FetchAllDates
+	err := FetchAllDates()
+	if err != nil {
+		t.Fatalf("FetchAllDates() error = %v", err)
+	}
+	if len(dates.Dates) != 1 || dates.Dates[0].Dates[0] != "2024-12-01" {
+		t.Errorf("FetchAllDates() did not populate dates correctly")
+	}
+}
+
+func TestFetchAllRelation(t *testing.T) {
+	// Create a test server
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		json.NewEncoder(w).Encode(RelationResponse{
+			Relations: []Relation{
+				{
+					ID: 1,
+					DatesLocation: map[string][]string{
+						"2024-12-01": {"Location1", "Location2"},
+					},
+				},
+			},
+		})
+	}))
+	defer ts.Close()
+
+	// Replace the real URL with the test server URL
+	oldURL := relationURL
+	relationURL = ts.URL
+	defer func() { relationURL = oldURL }()
+
+	// Test FetchAllRelation
+	err := FetchAllRelation()
+	if err != nil {
+		t.Fatalf("FetchAllRelation() error = %v", err)
+	}
+	if len(relations.Relations) != 1 || relations.Relations[0].DatesLocation["2024-12-01"][0] != "Location1" {
+		t.Errorf("FetchAllRelation() did not populate relations correctly")
+	}
+}

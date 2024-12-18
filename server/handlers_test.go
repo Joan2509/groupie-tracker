@@ -371,7 +371,7 @@ func TestSearchPage(t *testing.T) {
 			expectedCode:    http.StatusOK,
 			expectedTitle:   "Search Results",
 			expectedQuery:   "nonexistent",
-			expectedMessage: "No matching artists found.",
+			expectedMessage: "No matching data found.",
 		},
 		{
 			name:         "Empty query",

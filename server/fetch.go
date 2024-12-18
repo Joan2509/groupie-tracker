@@ -117,3 +117,5 @@ func FetchAllDates() error {
 func FetchAllRelation() error {
 	return fetchData(relationURL, &relations)
 }
+
+
