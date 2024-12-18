@@ -49,6 +49,7 @@ func GenerateSuggestions(input string, artists []Artist) []SearchSuggestion {
 	return suggestions
 }
 
+// searchLocations creates search suggestions by searching through locations
 func searchLocations(query string, sugg []SearchSuggestion) []SearchSuggestion {
 	for _, artistLocation := range locations.Locations {
 		for _, location := range artistLocation.Locations {
@@ -65,6 +66,8 @@ func searchLocations(query string, sugg []SearchSuggestion) []SearchSuggestion {
 	return sugg
 }
 
+
+// createSuggestion returns a populated SearchSuggestion
 func createSuggestion(value, suggestionType string, artist Artist) SearchSuggestion {
 	return SearchSuggestion{
 		Value:    value,
@@ -74,6 +77,7 @@ func createSuggestion(value, suggestionType string, artist Artist) SearchSuggest
 	}
 }
 
+// PerformSearch Performs a search
 func PerformSearch(input string) []SearchResult {
 	Query := strings.ToLower(strings.TrimSpace(input))
 

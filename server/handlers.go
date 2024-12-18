@@ -68,7 +68,7 @@ func InfoAboutArtist(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if id <= 0 || id > len(artists) || err != nil {
 		log.Println(err)
-		ErrorPage(w, http.StatusBadRequest)
+		ErrorPage(w, http.StatusNotFound)
 		return
 	}
 	id--
@@ -84,6 +84,7 @@ func InfoAboutArtist(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "details.html", data)
 }
 
+// SearchSuggestionsHandler handles the search suggestions when the user types
 func SearchSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		ErrorPage(w, http.StatusMethodNotAllowed)
@@ -97,7 +98,7 @@ func SearchSuggestionsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(suggestions)
 }
 
-// SearchPage handles the artist search functionality.
+// SearchPage handles search functionality.
 func SearchPage(w http.ResponseWriter, r *http.Request) {
 	if !checkMethodAndPath(w, r, http.MethodGet, "/search/") {
 		return
@@ -168,6 +169,7 @@ func ErrorPage(w http.ResponseWriter, code int) {
 	}
 }
 
+// ServeStatic serves static files
 func ServeStatic(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		ErrorPage(w, http.StatusMethodNotAllowed)

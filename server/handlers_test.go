@@ -242,14 +242,14 @@ func TestInfoAboutArtist(t *testing.T) {
 			method:       http.MethodGet,
 			path:         "/artists/",
 			query:        "?id=999",
-			expectedCode: http.StatusBadRequest,
+			expectedCode: http.StatusNotFound,
 		},
 		{
 			name:         "Missing ID",
 			method:       http.MethodGet,
 			path:         "/artists/",
 			query:        "",
-			expectedCode: http.StatusBadRequest,
+			expectedCode: http.StatusNotFound,
 		},
 		{
 			name:         "Wrong method",
