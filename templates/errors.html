@@ -17,12 +17,16 @@
                 <div class="nav-links">
                     <li><a href="/" class="home-link" data-tooltip="Discover All Artists">GROUPIE-TRACKER</a></li>
                 </div>
-                <div class=search-form>
-                    <form action="/search" autocomplete="off" method="get" class="search-bar">
-                        <input class="search-input" list="search" id="Search" name="q" placeholder="Search artists by name..."
-                            required />
-                        <button type="submit" class="search-button" data-tooltip="search for artist by name"><i
-                                class="fa-sharp fa-solid fa-magnifying-glass"></i></button>
+                <div class="search-container">
+                    <form action="/search/" autocomplete="off" method="get" class="search-bar">
+                        <div class="search-wrapper">
+                            <div class="input-wrapper">
+                                <i class="fa-sharp fa-solid fa-magnifying-glass search-icon"></i>
+                                <input class="search-input" id="search-input" name="q" placeholder="Type here..."
+                                    required />
+                            </div>
+                            <div id="search-suggestions" class="search-suggestions"></div>
+                        </div>
                     </form>
                 </div>
             </ul>

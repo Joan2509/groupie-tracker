@@ -242,14 +242,14 @@ func TestInfoAboutArtist(t *testing.T) {
 			method:       http.MethodGet,
 			path:         "/artists/",
 			query:        "?id=999",
-			expectedCode: http.StatusBadRequest,
+			expectedCode: http.StatusNotFound,
 		},
 		{
 			name:         "Missing ID",
 			method:       http.MethodGet,
 			path:         "/artists/",
 			query:        "",
-			expectedCode: http.StatusBadRequest,
+			expectedCode: http.StatusNotFound,
 		},
 		{
 			name:         "Wrong method",
@@ -371,7 +371,7 @@ func TestSearchPage(t *testing.T) {
 			expectedCode:    http.StatusOK,
 			expectedTitle:   "Search Results",
 			expectedQuery:   "nonexistent",
-			expectedMessage: "No matching artists found.",
+			expectedMessage: "No matching data found.",
 		},
 		{
 			name:         "Empty query",
